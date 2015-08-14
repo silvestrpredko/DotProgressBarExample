@@ -1,0 +1,158 @@
+###############################
+### Project files
+##############################
+*.obb
+*.zip
+
+###############################
+### OS temporary files
+###############################
+### Windows
+Thumbs.db
+Desktop.ini
+*.exe
+*.msi
+### Linux
+*~
+.directory
+### OS X
+.DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+._*
+
+### Java generated files
+*.class
+*.jar
+!*/libs/*.jar
+*.war
+*.ear
+*.apk
+*.alloc
+
+### VM crash logs
+hs_err_pid*
+
+### Hibernate MetaModels
+*_.java
+
+## GWT
+war/
+html/war/gwt_bree/
+html/gwt-unitCache/
+.apt_generated/
+html/war/WEB-INF/deploy/
+html/war/WEB-INF/classes/
+.gwt/
+gwt-unitCache/
+www-test/
+.gwt-tmp/
+
+### JBoss
+jboss/server/all/deploy/project.ext
+jboss/server/default/deploy/project.ext
+jboss/server/minimal/deploy/project.ext
+jboss/server/all/log/*.log
+jboss/server/all/tmp/**/*
+jboss/server/all/data/**/*
+jboss/server/all/work/**/*
+jboss/server/default/log/*.log
+jboss/server/default/tmp/**/*
+jboss/server/default/data/**/*
+jboss/server/default/work/**/*
+jboss/server/minimal/log/*.log
+jboss/server/minimal/tmp/**/*
+jboss/server/minimal/data/**/*
+jboss/server/minimal/work/**/*
+
+*.DEPLOYED
+
+#####################################
+### Build Systems
+#####################################
+
+### Ant
+gen/
+
+### Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+### Gradle
+.gradle
+build/
+android/libs/armeabi/
+android/libs/armeabi-v7a/
+android/libs/x86/
+android/gen/
+
+gradle/
+gradlew*
+gradle.properties
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+######################################
+### IDE
+######################################
+
+### JetBrains IDEs
+.idea/
+*.ipr
+*.iml
+*.iws
+
+out/
+
+.idea_modules/
+atlassian-ide-plugin.xml
+com_crashlytics_export_strings.xml
+
+### Eclipse
+*.pydevproject
+.metadata
+.classpath
+.project
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+# sbteclipse plugin
+.target
+
+### NetBeans
+nbproject/private
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+Logic/target/
+
+#### Diff temporary files
+*.orig
