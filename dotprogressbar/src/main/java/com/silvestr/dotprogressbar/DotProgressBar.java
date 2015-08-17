@@ -1,5 +1,7 @@
 package com.silvestr.dotprogressbar;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -27,6 +29,8 @@ public class DotProgressBar extends View {
    * Drawing tools
    */
   private Paint paint;
+  private Paint secondColorPaint;
+  private Paint thirdColorPaint;
 
   /**
    * Animation tools
@@ -88,20 +92,23 @@ public class DotProgressBar extends View {
 
   private void init() {
     paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
-    paint.setColor(Color.BLACK);
+    paint.setColor(Color.parseColor("#0D47A1"));
     paint.setStrokeJoin(Paint.Join.ROUND);
     paint.setStrokeCap(Paint.Cap.ROUND);
     paint.setStrokeWidth(20);
+
+    secondColorPaint = new Paint(paint);
+    thirdColorPaint = new Paint(paint);
   }
 
   private void drawCircles(Canvas canvas, float radius) {
     float step = 0;
     for (int i = 0; i < DOT_AMOUNT; i++) {
       if (dotPosition == i) {
-        canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, dotRadius + radius, paint);
+        canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, dotRadius + radius, secondColorPaint);
       } else {
         if ((i == (DOT_AMOUNT - 1) && dotPosition == 0 && !isFirstLaunch) || ((dotPosition - 1) == i)) {
-          canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, bounceDotRadius - radius, paint);
+          canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, bounceDotRadius - radius, thirdColorPaint);
         } else {
           canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, dotRadius, paint);
         }
@@ -144,6 +151,29 @@ public class DotProgressBar extends View {
         if (dotPosition == DOT_AMOUNT) {
           dotPosition = 0;
         }
+
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(Color.parseColor("#0D47A1"), Color.parseColor("#1976D2"));
+        valueAnimator.setDuration(ANIMATION_TIME);
+        valueAnimator.setEvaluator(new ArgbEvaluator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator animation) {
+            secondColorPaint.setColor(((Integer) animation.getAnimatedValue()));
+          }
+        });
+        valueAnimator.start();
+
+        ValueAnimator valueAnimator1 = ValueAnimator.ofInt(Color.parseColor("#1976D2"), Color.parseColor("#0D47A1"));
+        valueAnimator1.setDuration(ANIMATION_TIME);
+        valueAnimator1.setEvaluator(new ArgbEvaluator());
+        valueAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator animation) {
+            thirdColorPaint.setColor(((Integer) animation.getAnimatedValue()));
+          }
+        });
+        valueAnimator1.start();
+
         isFirstLaunch = false;
       }
     });
