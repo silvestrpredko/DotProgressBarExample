@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="DotProgressBar">
+    <attr name="startColor" format="color"/>
+    <attr name="endColor" format="color"/>
+    <attr name="duration" format="integer"/>
+    <attr name="amount" format="integer"/>
+  </declare-styleable>
+</resources>
