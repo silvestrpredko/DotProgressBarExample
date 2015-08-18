@@ -4,6 +4,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -23,23 +24,24 @@ public class DotProgressBar extends View {
   /**
    * Dots amount
    */
-  private static final int DOT_AMOUNT = 5;
+  private int dotAmount;
 
   /**
    * Drawing tools
    */
-  private Paint paint;
-  private Paint secondColorPaint;
-  private Paint thirdColorPaint;
+  private Paint primaryPaint;
+  private Paint startPaint;
+  private Paint endPaint;
 
   /**
    * Animation tools
    */
-  private static final int ANIMATION_TIME = 300;
+  private int animationTime;
   private BounceAnimation bounceAnimation;
   private float animatedRadius;
   private boolean isFirstLaunch = true;
-  private float mInterpolatedTime;
+  private ValueAnimator startValueAnimator;
+  private ValueAnimator endValueAnimator;
 
   /**
    * Circle size
@@ -53,24 +55,34 @@ public class DotProgressBar extends View {
   private float xCoordinate;
   private int dotPosition;
 
+  /**
+   * Colors
+   * */
+  private int startColor;
+  private int endColor;
+
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   public DotProgressBar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
+    initializeAttributes(attrs);
     init();
   }
 
   public DotProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
+    initializeAttributes(attrs);
     init();
   }
 
   public DotProgressBar(Context context, AttributeSet attrs) {
     super(context, attrs);
+    initializeAttributes(attrs);
     init();
   }
 
   public DotProgressBar(Context context) {
     super(context);
+    initializeAttributes(null);
     init();
   }
 
@@ -80,37 +92,84 @@ public class DotProgressBar extends View {
     setMeasuredDimension(getMeasuredWidth(), getMeasuredHeight());
 
     if (getMeasuredHeight() > getMeasuredWidth()) {
-      dotRadius = getMeasuredWidth() / DOT_AMOUNT / 4;
+      dotRadius = getMeasuredWidth() / dotAmount / 4;
     } else {
       dotRadius = getMeasuredHeight() / 4;
     }
 
     bounceDotRadius = dotRadius + (dotRadius / 3);
-    float circlesWidth = (DOT_AMOUNT * (dotRadius * 2)) + dotRadius * (DOT_AMOUNT - 1);
+    float circlesWidth = (dotAmount * (dotRadius * 2)) + dotRadius * (dotAmount - 1);
     xCoordinate = (getMeasuredWidth() - circlesWidth) / 2 + dotRadius;
   }
 
-  private void init() {
-    paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
-    paint.setColor(Color.parseColor("#0D47A1"));
-    paint.setStrokeJoin(Paint.Join.ROUND);
-    paint.setStrokeCap(Paint.Cap.ROUND);
-    paint.setStrokeWidth(20);
+  private void initializeAttributes(AttributeSet attrs) {
+    if (attrs != null) {
+      TypedArray a = getContext().getTheme().obtainStyledAttributes(
+          attrs,
+          R.styleable.DotProgressBar,
+          0, 0);
 
-    secondColorPaint = new Paint(paint);
-    thirdColorPaint = new Paint(paint);
+      try {
+        dotAmount = a.getInteger(R.styleable.DotProgressBar_amount, 5);
+        animationTime = a.getInteger(
+            R.styleable.DotProgressBar_duration,
+            getResources().getInteger(android.R.integer.config_mediumAnimTime)
+        );
+        startColor = a.getInteger(R.styleable.DotProgressBar_startColor, getResources().getColor(R.color.light_blue_A700));
+        endColor = a.getInteger(R.styleable.DotProgressBar_endColor, getResources().getColor(R.color.light_blue_A400));
+      } finally {
+        a.recycle();
+      }
+
+    } else {
+      dotAmount = 5;
+      animationTime = getResources().getInteger(android.R.integer.config_mediumAnimTime);
+      startColor = getResources().getColor(R.color.light_blue_A700);
+      endColor = getResources().getColor(R.color.light_blue_A400);
+    }
+  }
+
+  private void init() {
+    primaryPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+    primaryPaint.setColor(startColor);
+    primaryPaint.setStrokeJoin(Paint.Join.ROUND);
+    primaryPaint.setStrokeCap(Paint.Cap.ROUND);
+    primaryPaint.setStrokeWidth(20);
+
+    startPaint = new Paint(primaryPaint);
+    endPaint = new Paint(primaryPaint);
+
+    startValueAnimator = ValueAnimator.ofInt(startColor, endColor);
+    startValueAnimator.setDuration(animationTime);
+    startValueAnimator.setEvaluator(new ArgbEvaluator());
+    startValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator animation) {
+        startPaint.setColor(((Integer) animation.getAnimatedValue()));
+      }
+    });
+
+    endValueAnimator = ValueAnimator.ofInt(endColor, startColor);
+    endValueAnimator.setDuration(animationTime);
+    endValueAnimator.setEvaluator(new ArgbEvaluator());
+    endValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator animation) {
+        endPaint.setColor(((Integer) animation.getAnimatedValue()));
+      }
+    });
   }
 
   private void drawCircles(Canvas canvas, float radius) {
     float step = 0;
-    for (int i = 0; i < DOT_AMOUNT; i++) {
+    for (int i = 0; i < dotAmount; i++) {
       if (dotPosition == i) {
-        canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, dotRadius + radius, secondColorPaint);
+        canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, dotRadius + radius, startPaint);
       } else {
-        if ((i == (DOT_AMOUNT - 1) && dotPosition == 0 && !isFirstLaunch) || ((dotPosition - 1) == i)) {
-          canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, bounceDotRadius - radius, thirdColorPaint);
+        if ((i == (dotAmount - 1) && dotPosition == 0 && !isFirstLaunch) || ((dotPosition - 1) == i)) {
+          canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, bounceDotRadius - radius, endPaint);
         } else {
-          canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, dotRadius, paint);
+          canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, dotRadius, primaryPaint);
         }
       }
 
@@ -131,7 +190,7 @@ public class DotProgressBar extends View {
 
   private void startAnimation() {
     bounceAnimation = new BounceAnimation();
-    bounceAnimation.setDuration(ANIMATION_TIME);
+    bounceAnimation.setDuration(animationTime);
     bounceAnimation.setRepeatCount(Animation.INFINITE);
     bounceAnimation.setInterpolator(new LinearInterpolator());
     bounceAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -148,31 +207,15 @@ public class DotProgressBar extends View {
       @Override
       public void onAnimationRepeat(Animation animation) {
         dotPosition++;
-        if (dotPosition == DOT_AMOUNT) {
+        if (dotPosition == dotAmount) {
           dotPosition = 0;
         }
 
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(Color.parseColor("#0D47A1"), Color.parseColor("#1976D2"));
-        valueAnimator.setDuration(ANIMATION_TIME);
-        valueAnimator.setEvaluator(new ArgbEvaluator());
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-          @Override
-          public void onAnimationUpdate(ValueAnimator animation) {
-            secondColorPaint.setColor(((Integer) animation.getAnimatedValue()));
-          }
-        });
-        valueAnimator.start();
+        startValueAnimator.start();
 
-        ValueAnimator valueAnimator1 = ValueAnimator.ofInt(Color.parseColor("#1976D2"), Color.parseColor("#0D47A1"));
-        valueAnimator1.setDuration(ANIMATION_TIME);
-        valueAnimator1.setEvaluator(new ArgbEvaluator());
-        valueAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-          @Override
-          public void onAnimationUpdate(ValueAnimator animation) {
-            thirdColorPaint.setColor(((Integer) animation.getAnimatedValue()));
-          }
-        });
-        valueAnimator1.start();
+        if (!isFirstLaunch) {
+          endValueAnimator.start();
+        }
 
         isFirstLaunch = false;
       }
@@ -219,7 +262,6 @@ public class DotProgressBar extends View {
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation t) {
       super.applyTransformation(interpolatedTime, t);
-      mInterpolatedTime = interpolatedTime;
       animatedRadius = (bounceDotRadius - dotRadius) * interpolatedTime;
       invalidate();
     }

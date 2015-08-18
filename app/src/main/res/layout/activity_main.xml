@@ -1,5 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
+                xmlns:custom="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -10,6 +11,10 @@
 
   <com.silvestr.dotprogressbar.DotProgressBar
       android:layout_width="match_parent"
-      android:layout_height="50dp"/>
+      android:layout_height="50dp"
+      custom:amount="5"
+      custom:startColor="@color/light_blue_A700"
+      custom:endColor="@color/light_blue_A400"
+      custom:duration="@android:integer/config_mediumAnimTime"/>
 
 </FrameLayout>
