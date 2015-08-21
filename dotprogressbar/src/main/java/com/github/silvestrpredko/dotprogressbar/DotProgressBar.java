@@ -1,4 +1,4 @@
-package com.silvestr.dotprogressbar;
+package com.github.silvestrpredko.dotprogressbar;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
+
+import com.silvestr.dotprogressbar.R;
 
 /**
  * @author Silvestr Predko.
