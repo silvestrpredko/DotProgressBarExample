@@ -1,1 +1,1 @@
-include ':app', ':dotprogressbar'
+include ':app', ':dot-progress-bar'

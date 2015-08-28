@@ -2,11 +2,11 @@ apply plugin: 'com.android.library'
 
 ext {
   bintrayRepo = 'maven'
-  bintrayName = 'dotprogressbar'
+  bintrayName = 'dot-progress-bar'
 
   publishedGroupId = 'com.github.silvestrpredko'
   libraryName = 'DotProgressBar'
-  artifact = 'dotprogressbar'
+  artifact = 'dot-progress-bar'
 
   libraryDescription = 'simple progress bar'
 
