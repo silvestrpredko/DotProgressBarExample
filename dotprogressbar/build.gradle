@@ -2,18 +2,18 @@ apply plugin: 'com.android.library'
 
 ext {
   bintrayRepo = 'maven'
-  bintrayName = 'dot-progress-bar'
+  bintrayName = 'dotprogressbar'
 
-  publishedGroupId = 'com.github.silvestrpredko.dotprogressbar'
+  publishedGroupId = 'com.github.silvestrpredko'
   libraryName = 'DotProgressBar'
-  artifact = 'dot-progress-bar'
+  artifact = 'dotprogressbar'
 
   libraryDescription = 'simple progress bar'
 
   siteUrl = 'https://github.com/silvestrpredko/DotProgressBarExample'
   gitUrl = 'https://github.com/silvestrpredko/DotProgressBarExample.git'
 
-  libraryVersion = '0.1.1'
+  libraryVersion = '0.1.2'
 
   developerId = 'silvestr1994'
   developerName = 'Silvestr Predko'
@@ -49,4 +49,6 @@ apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   compile 'com.android.support:appcompat-v7:23.0.0'
+
+  provided 'com.android.support:support-annotations:23.0.0'
 }
