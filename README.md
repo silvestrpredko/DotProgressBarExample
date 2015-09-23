@@ -26,3 +26,5 @@
       custom:endColor="@color/light_blue_A400"
       custom:startColor="@color/light_blue_A700"/>
 ```
+### License
+[link](./LICENSE.md)
