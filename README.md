@@ -26,5 +26,13 @@
       custom:endColor="@color/light_blue_A400"
       custom:startColor="@color/light_blue_A700"/>
 ```
+####**Code**
+```java
+dotProgressBar.setStartColor(startColor);
+dotProgressBar.setEndColor(endColor);
+dotProgressBar.setDotAmount(amount);
+dotProgressBar.setAnimationTime(time);
+```
+
 ### License
 [link](./LICENSE.md)
