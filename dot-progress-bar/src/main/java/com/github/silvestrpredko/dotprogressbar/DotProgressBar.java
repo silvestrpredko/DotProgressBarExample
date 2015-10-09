@@ -162,6 +162,40 @@ public class DotProgressBar extends View {
     });
   }
 
+  public void setDotAmount(int amount) {
+    stopAnimation();
+    this.dotAmount = amount;
+    this.dotPosition = 0;
+    reinitialize();
+  }
+
+  public void setStartColor(int color) {
+    stopAnimation();
+    this.startColor = color;
+    reinitialize();
+  }
+
+  public void setEndColor(int color) {
+    stopAnimation();
+    this.endColor = color;
+    reinitialize();
+  }
+
+  public void setAnimationTime(int animationTime) {
+    stopAnimation();
+    this.animationTime = animationTime;
+    reinitialize();
+  }
+
+  /**
+   * Reinitialize animators instances
+   * */
+  private void reinitialize() {
+    init();
+    requestLayout();
+    startAnimation();
+  }
+
   private void drawCircles(Canvas canvas, float radius) {
     float step = 0;
     for (int i = 0; i < dotAmount; i++) {
