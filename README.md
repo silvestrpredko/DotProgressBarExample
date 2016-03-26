@@ -9,6 +9,8 @@
 
 [![enter image description here](http://style.anu.edu.au/_anu/images/icons/icon-google-play-small.png)](https://play.google.com/store/apps/details?id=com.silvestr.dotprogressbarexample&hl=en)
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-DotProgressBar-green.svg?style=true)](https://android-arsenal.com/details/1/3340)
+
 ###**Gradle**
 ```groovy
     compile 'com.github.silvestrpredko:dot-progress-bar:0.1.3@aar'
