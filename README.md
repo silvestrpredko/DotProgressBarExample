@@ -13,7 +13,7 @@
 
 ###**Gradle**
 ```groovy
-    compile 'com.github.silvestrpredko:dot-progress-bar:0.1.3@aar'
+    compile 'com.github.silvestrpredko:dot-progress-bar:0.1.4@aar'
 ```    
 
 ## **Usage** ##
