@@ -1,30 +1,29 @@
 package com.silvestr.dotprogressbarexample;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.github.silvestrpredko.dotprogressbar.DotProgressBar;
+import com.github.silvestrpredko.dotprogressbar.DotProgressBarBuilder;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
   DotProgressBar dotProgressBar;
 
@@ -43,10 +42,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     getSupportActionBar().setTitle(getString(R.string.app_name));
     ImageView profileImageView = (ImageView) findViewById(R.id.imageView);
-    Button btnDotAmount = (Button) findViewById(R.id.btn_change_dot_amount);
+    final Button btnChangeVisibility = (Button) findViewById(R.id.btn_change_visibility);
+    final Button btnChangeAnimationDirection = (Button) findViewById(R.id.btn_change_animation_direction);
     dotProgressBar = (DotProgressBar) findViewById(R.id.dot_progress_bar);
 
-    btnDotAmount.setOnClickListener(this);
+    btnChangeVisibility.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        if (dotProgressBar.getVisibility() == View.VISIBLE) {
+          dotProgressBar.setVisibility(View.INVISIBLE);
+        } else {
+          dotProgressBar.setVisibility(View.VISIBLE);
+        }
+      }
+    });
+
+    btnChangeAnimationDirection.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        if (dotProgressBar.getAnimationDirection() < 0) {
+          dotProgressBar.changeAnimationDirection(DotProgressBar.RIGHT_DIRECTION);
+        } else {
+          dotProgressBar.changeAnimationDirection(DotProgressBar.LEFT_DIRECTION);
+        }
+      }
+    });
+
+    final LinearLayoutCompat progressBarContainer =
+            (LinearLayoutCompat) findViewById(R.id.progress_bar_container);
+
+    DotProgressBarBuilder builder = new DotProgressBarBuilder(this);
+    builder.setStartColor(Color.BLACK)
+            .setEndColor(ContextCompat.getColor(this, R.color.cyan_400))
+            .setAnimationDirection(DotProgressBar.LEFT_DIRECTION)
+            .setDotAmount(7);
+
+    progressBarContainer.addView(builder.build());
 
     Uri uri = Uri.parse("http://i1.wp.com/cdn.techreviewpro.com//2015/03/Amazing-WhatsApp-DP-Wonderful-Stylish-Girls-for-fb-Profile-Picture.jpg");
     Glide.with(this).load(uri)
@@ -55,44 +86,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         .into(profileImageView);
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.menu_main, menu);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
-
-    //noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
-      return true;
-    }
-
-    return super.onOptionsItemSelected(item);
-  }
-
-  @Override
-  public void onClick(View v) {
-    if (dotProgressBar.getVisibility() == View.VISIBLE) {
-      dotProgressBar.setVisibility(View.GONE);
-    } else {
-      dotProgressBar.setVisibility(View.VISIBLE);
-    }
-  }
-
   static class CircleTransform extends BitmapTransformation {
     public CircleTransform(Context context) {
       super(context);
-    }
-
-    @Override protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-      return circleCrop(pool, toTransform);
     }
 
     private static Bitmap circleCrop(BitmapPool pool, Bitmap source) {
@@ -116,6 +112,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
       float r = size / 2f;
       canvas.drawCircle(r, r, r, paint);
       return result;
+    }
+
+    @Override protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+      return circleCrop(pool, toTransform);
     }
 
     @Override public String getId() {

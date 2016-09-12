@@ -5,5 +5,9 @@
     <attr name="endColor" format="color"/>
     <attr name="duration" format="integer"/>
     <attr name="amount" format="integer"/>
+    <attr name="animationDirection" format="enum">
+      <enum name="right" value="1"/>
+      <enum name="left" value="-1"/>
+    </attr>
   </declare-styleable>
 </resources>

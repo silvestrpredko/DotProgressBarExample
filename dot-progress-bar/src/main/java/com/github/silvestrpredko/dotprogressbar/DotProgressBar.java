@@ -9,59 +9,64 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 
-import com.github.silvestrpredko.dotprogressbar.R;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * @author Silvestr Predko.
  */
 public class DotProgressBar extends View {
 
+  public static final int RIGHT_DIRECTION = 1;
+  public static final int LEFT_DIRECTION = -1;
   /**
    * Dots amount
    */
   private int dotAmount;
-
   /**
    * Drawing tools
    */
   private Paint primaryPaint;
   private Paint startPaint;
   private Paint endPaint;
-
   /**
    * Animation tools
    */
-  private int animationTime;
-  private BounceAnimation bounceAnimation;
+  private long animationTime;
   private float animatedRadius;
   private boolean isFirstLaunch = true;
   private ValueAnimator startValueAnimator;
   private ValueAnimator endValueAnimator;
-
   /**
    * Circle size
    */
   private float dotRadius;
   private float bounceDotRadius;
-
   /**
    * Circle coordinates
    */
   private float xCoordinate;
   private int dotPosition;
-
   /**
    * Colors
    */
   private int startColor;
   private int endColor;
+  /**
+   * This value detect direction of circle animation direction
+   * {@link DotProgressBar#RIGHT_DIRECTION} and {@link DotProgressBar#LEFT_DIRECTION}
+   * */
+  private int animationDirection;
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   public DotProgressBar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -88,6 +93,18 @@ public class DotProgressBar extends View {
     init();
   }
 
+  public static int darker(int color, float factor) {
+    int a = Color.alpha(color);
+    int r = Color.red(color);
+    int g = Color.green(color);
+    int b = Color.blue(color);
+
+    return Color.argb(a,
+        Math.max((int) (r * factor), 0),
+        Math.max((int) (g * factor), 0),
+        Math.max((int) (b * factor), 0));
+  }
+
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -112,22 +129,34 @@ public class DotProgressBar extends View {
           0, 0);
 
       try {
-        dotAmount = a.getInteger(R.styleable.DotProgressBar_amount, 5);
-        animationTime = a.getInteger(
-            R.styleable.DotProgressBar_duration,
-            getResources().getInteger(android.R.integer.config_mediumAnimTime)
+        setDotAmount(a.getInteger(R.styleable.DotProgressBar_amount, 5));
+        setAnimationTime(animationTime = a.getInteger(
+                R.styleable.DotProgressBar_duration,
+                getResources().getInteger(android.R.integer.config_mediumAnimTime)
+        ));
+        setStartColor(
+                a.getInteger(
+                        R.styleable.DotProgressBar_startColor,
+                        ContextCompat.getColor(getContext(), R.color.light_blue_A700)
+                )
         );
-        startColor = a.getInteger(R.styleable.DotProgressBar_startColor, getResources().getColor(R.color.light_blue_A700));
-        endColor = a.getInteger(R.styleable.DotProgressBar_endColor, getResources().getColor(R.color.light_blue_A400));
+        setEndColor(
+                a.getInteger(
+                        R.styleable.DotProgressBar_endColor,
+                        ContextCompat.getColor(getContext(), R.color.light_blue_A400)
+                )
+        );
+        setAnimationDirection(a.getInt(R.styleable.DotProgressBar_animationDirection, 1));
       } finally {
         a.recycle();
       }
 
     } else {
-      dotAmount = 5;
-      animationTime = getResources().getInteger(android.R.integer.config_mediumAnimTime);
-      startColor = getResources().getColor(R.color.light_blue_A700);
-      endColor = getResources().getColor(R.color.light_blue_A400);
+      setDotAmount(5);
+      setAnimationTime(getResources().getInteger(android.R.integer.config_mediumAnimTime));
+      setStartColor(ContextCompat.getColor(getContext(), R.color.light_blue_A700));
+      setEndColor(ContextCompat.getColor(getContext(), R.color.light_blue_A400));
+      setAnimationDirection(1);
     }
   }
 
@@ -162,29 +191,66 @@ public class DotProgressBar extends View {
     });
   }
 
-  public void setDotAmount(int amount) {
-    stopAnimation();
+  /**
+   * setters for builder
+   * */
+  void setDotAmount(int amount) {
     this.dotAmount = amount;
-    this.dotPosition = 0;
-    reinitialize();
   }
 
-  public void setStartColor(int color) {
-    stopAnimation();
+  void setStartColor(@ColorInt int color) {
     this.startColor = color;
+  }
+
+  void setEndColor(@ColorInt int color) {
+    this.endColor = color;
+  }
+
+  void setAnimationTime(long animationTime) {
+    this.animationTime = animationTime;
+  }
+
+  private void setDotPosition(int dotPosition) {
+    this.dotPosition = dotPosition;
+  }
+
+  public void changeDotAmount(int amount) {
+    stopAnimation();
+    setDotAmount(amount);
+    setDotPosition(0);
     reinitialize();
   }
 
-  public void setEndColor(int color) {
+  public void changeStartColor(@ColorInt int color) {
+    stopAnimation();
+    setStartColor(color);
+    reinitialize();
+  }
+
+  public void changeEndColor(@ColorInt int color) {
     stopAnimation();
     this.endColor = color;
     reinitialize();
   }
 
-  public void setAnimationTime(int animationTime) {
+  public void changeAnimationTime(int animationTime) {
     stopAnimation();
-    this.animationTime = animationTime;
+    setAnimationTime(animationTime);
     reinitialize();
+  }
+
+  public void changeAnimationDirection(@AnimationDirection int animationDirection) {
+    stopAnimation();
+    setAnimationDirection(animationDirection);
+    reinitialize();
+  }
+
+  public int getAnimationDirection() {
+    return animationDirection;
+  }
+
+  void setAnimationDirection(int direction) {
+    this.animationDirection = direction;
   }
 
   /**
@@ -196,27 +262,69 @@ public class DotProgressBar extends View {
     startAnimation();
   }
 
-  private void drawCircles(Canvas canvas, float radius) {
+  private void drawCirclesLeftToRight(Canvas canvas, float radius) {
     float step = 0;
     for (int i = 0; i < dotAmount; i++) {
-      if (dotPosition == i) {
-        canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, dotRadius + radius, startPaint);
-      } else {
-        if ((i == (dotAmount - 1) && dotPosition == 0 && !isFirstLaunch) || ((dotPosition - 1) == i)) {
-          canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, bounceDotRadius - radius, endPaint);
-        } else {
-          canvas.drawCircle(xCoordinate + step, getMeasuredHeight() / 2, dotRadius, primaryPaint);
-        }
-      }
-
+      drawCircles(canvas, i, step, radius);
       step += dotRadius * 3;
     }
+  }
+
+  private void drawCirclesRightToLeft(Canvas canvas, float radius) {
+    float step = 0;
+    for (int i = dotAmount - 1; i >= 0; i--) {
+      drawCircles(canvas, i, step, radius);
+      step += dotRadius * 3;
+    }
+  }
+
+  private void drawCircles(@NonNull Canvas canvas, int i, float step, float radius) {
+    if (dotPosition == i) {
+      drawCircleUp(canvas, step, radius);
+    } else {
+      if ((i == (dotAmount - 1) && dotPosition == 0 && !isFirstLaunch) || ((dotPosition - 1) == i)) {
+        drawCircleDown(canvas, step, radius);
+      } else {
+        drawCircle(canvas, step);
+      }
+    }
+  }
+
+  private void drawCircleUp(@NonNull Canvas canvas, float step, float radius) {
+    canvas.drawCircle(
+            xCoordinate + step,
+            getMeasuredHeight() / 2,
+            dotRadius + radius,
+            startPaint
+    );
+  }
+
+  private void drawCircle(@NonNull Canvas canvas, float step) {
+    canvas.drawCircle(
+            xCoordinate + step,
+            getMeasuredHeight() / 2,
+            dotRadius,
+            primaryPaint
+    );
+  }
+
+  private void drawCircleDown(@NonNull Canvas canvas, float step, float radius) {
+    canvas.drawCircle(
+            xCoordinate + step,
+            getMeasuredHeight() / 2,
+            bounceDotRadius - radius,
+            endPaint
+    );
   }
 
   @Override
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
-    drawCircles(canvas, animatedRadius);
+    if (animationDirection < 0) {
+      drawCirclesRightToLeft(canvas, animatedRadius);
+    } else {
+      drawCirclesLeftToRight(canvas, animatedRadius);
+    }
   }
 
   private void stopAnimation() {
@@ -225,7 +333,7 @@ public class DotProgressBar extends View {
   }
 
   private void startAnimation() {
-    bounceAnimation = new BounceAnimation();
+    final BounceAnimation bounceAnimation = new BounceAnimation();
     bounceAnimation.setDuration(animationTime);
     bounceAnimation.setRepeatCount(Animation.INFINITE);
     bounceAnimation.setInterpolator(new LinearInterpolator());
@@ -259,18 +367,6 @@ public class DotProgressBar extends View {
     startAnimation(bounceAnimation);
   }
 
-  public static int darker(int color, float factor) {
-    int a = Color.alpha(color);
-    int r = Color.red(color);
-    int g = Color.green(color);
-    int b = Color.blue(color);
-
-    return Color.argb(a,
-        Math.max((int) (r * factor), 0),
-        Math.max((int) (g * factor), 0),
-        Math.max((int) (b * factor), 0));
-  }
-
   @Override
   protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
     super.onVisibilityChanged(changedView, visibility);
@@ -293,6 +389,10 @@ public class DotProgressBar extends View {
     super.onAttachedToWindow();
     startAnimation();
   }
+
+  @Retention(RetentionPolicy.SOURCE)
+  @IntDef({RIGHT_DIRECTION, LEFT_DIRECTION})
+  public @interface AnimationDirection {}
 
   private class BounceAnimation extends Animation {
     @Override

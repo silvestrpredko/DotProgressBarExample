@@ -34,11 +34,11 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="start|top"
+          android:alpha="0.87"
+          android:padding="5dp"
           android:text="Veronica"
           android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
-          android:textColor="@android:color/black"
-          android:alpha="0.87"
-          android:padding="5dp"/>
+          android:textColor="@android:color/black"/>
 
       <LinearLayout
           android:layout_width="match_parent"
@@ -57,36 +57,51 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="is typing"
             android:layout_gravity="center|bottom"
-            android:textColor="@android:color/black"
-            android:alpha="0.54"/>
+            android:alpha="0.54"
+            android:text="is typing"
+            android:textColor="@android:color/black"/>
 
       </LinearLayout>
     </LinearLayout>
   </LinearLayout>
 
-  <com.github.silvestrpredko.dotprogressbar.DotProgressBar
-      android:id="@+id/dot_progress_bar"
+  <android.support.v7.widget.LinearLayoutCompat
+      android:id="@+id/progress_bar_container"
       android:layout_width="match_parent"
-      android:layout_height="50dp"
-      android:layout_gravity="center|bottom"
-      android:layout_marginTop="20dp"
-      custom:amount="5"
-      custom:duration="@android:integer/config_mediumAnimTime"
-      custom:endColor="@color/light_blue_A400"
-      custom:startColor="@color/light_blue_A700"/>
+      android:layout_height="100dp"
+      android:orientation="vertical">
+
+    <com.github.silvestrpredko.dotprogressbar.DotProgressBar
+        android:id="@+id/dot_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center|bottom"
+        android:layout_marginTop="20dp"
+        custom:amount="5"
+        custom:animationDirection="right"
+        custom:duration="@android:integer/config_mediumAnimTime"
+        custom:endColor="@color/light_blue_A400"
+        custom:startColor="@color/light_blue_A700"/>
+  </android.support.v7.widget.LinearLayoutCompat>
 
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="horizontal"
       android:gravity="center"
+      android:orientation="vertical"
       android:paddingTop="50dp">
+
     <Button
-        android:id="@+id/btn_change_dot_amount"
+        android:id="@+id/btn_change_visibility"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Change Visibility"/>
+
+    <Button
+        android:id="@+id/btn_change_animation_direction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Direction"/>
   </LinearLayout>
 </LinearLayout>
