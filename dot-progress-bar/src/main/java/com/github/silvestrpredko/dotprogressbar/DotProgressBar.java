@@ -29,16 +29,19 @@ public class DotProgressBar extends View {
 
   public static final int RIGHT_DIRECTION = 1;
   public static final int LEFT_DIRECTION = -1;
+
   /**
    * Dots amount
    */
   private int dotAmount;
+
   /**
    * Drawing tools
    */
   private Paint primaryPaint;
   private Paint startPaint;
   private Paint endPaint;
+
   /**
    * Animation tools
    */
@@ -47,6 +50,7 @@ public class DotProgressBar extends View {
   private boolean isFirstLaunch = true;
   private ValueAnimator startValueAnimator;
   private ValueAnimator endValueAnimator;
+
   /**
    * Circle size
    */
@@ -57,11 +61,13 @@ public class DotProgressBar extends View {
    */
   private float xCoordinate;
   private int dotPosition;
+
   /**
    * Colors
    */
   private int startColor;
   private int endColor;
+
   /**
    * This value detect direction of circle animation direction
    * {@link DotProgressBar#RIGHT_DIRECTION} and {@link DotProgressBar#LEFT_DIRECTION}
@@ -192,7 +198,7 @@ public class DotProgressBar extends View {
   }
 
   /**
-   * setters for builder
+   * setters
    * */
   void setDotAmount(int amount) {
     this.dotAmount = amount;
@@ -214,6 +220,10 @@ public class DotProgressBar extends View {
     this.dotPosition = dotPosition;
   }
 
+  /**
+   * Set amount of dots, it will be restarted your view
+   * @param amount number of dots, dot size automatically adjust
+   * */
   public void changeDotAmount(int amount) {
     stopAnimation();
     setDotAmount(amount);
@@ -221,28 +231,39 @@ public class DotProgressBar extends View {
     reinitialize();
   }
 
+  /**
+   * It will be restarted your view
+   * */
   public void changeStartColor(@ColorInt int color) {
     stopAnimation();
     setStartColor(color);
     reinitialize();
   }
 
+  /**
+   * It will be restarted your view
+   * */
   public void changeEndColor(@ColorInt int color) {
     stopAnimation();
-    this.endColor = color;
+    setEndColor(color);
     reinitialize();
   }
 
-  public void changeAnimationTime(int animationTime) {
+  /**
+   * It will be restarted your view
+   * */
+  public void changeAnimationTime(long animationTime) {
     stopAnimation();
     setAnimationTime(animationTime);
     reinitialize();
   }
 
+  /**
+   * Change animation direction, doesn't restart view.
+   * @param animationDirection left or right animation direction
+   * */
   public void changeAnimationDirection(@AnimationDirection int animationDirection) {
-    stopAnimation();
     setAnimationDirection(animationDirection);
-    reinitialize();
   }
 
   public int getAnimationDirection() {
@@ -256,7 +277,7 @@ public class DotProgressBar extends View {
   /**
    * Reinitialize animators instances
    * */
-  private void reinitialize() {
+  void reinitialize() {
     init();
     requestLayout();
     startAnimation();
@@ -290,6 +311,9 @@ public class DotProgressBar extends View {
     }
   }
 
+  /**
+   * Circle radius is grow
+   * */
   private void drawCircleUp(@NonNull Canvas canvas, float step, float radius) {
     canvas.drawCircle(
             xCoordinate + step,
@@ -308,6 +332,9 @@ public class DotProgressBar extends View {
     );
   }
 
+  /**
+   * Circle radius is decrease
+   * */
   private void drawCircleDown(@NonNull Canvas canvas, float step, float radius) {
     canvas.drawCircle(
             xCoordinate + step,
@@ -337,17 +364,7 @@ public class DotProgressBar extends View {
     bounceAnimation.setDuration(animationTime);
     bounceAnimation.setRepeatCount(Animation.INFINITE);
     bounceAnimation.setInterpolator(new LinearInterpolator());
-    bounceAnimation.setAnimationListener(new Animation.AnimationListener() {
-      @Override
-      public void onAnimationStart(Animation animation) {
-
-      }
-
-      @Override
-      public void onAnimationEnd(Animation animation) {
-
-      }
-
+    bounceAnimation.setAnimationListener(new AnimationListener() {
       @Override
       public void onAnimationRepeat(Animation animation) {
         dotPosition++;

@@ -1,107 +1,141 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:custom="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#E8EAF6"
-              android:orientation="vertical"
-              tools:context=".MainActivity">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E8EAF6"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
   <android.support.v7.widget.Toolbar
       android:id="@+id/toolbar"
-      android:layout_width="match_parent"
+      android:layout_width="411dp"
       android:layout_height="wrap_content"
       android:background="?attr/colorPrimary"
-      android:minHeight="?attr/actionBarSize"/>
+      android:minHeight="?attr/actionBarSize"
+      custom:layout_constraintTop_toTopOf="parent"
+      custom:layout_constraintLeft_toLeftOf="parent"/>
 
-  <LinearLayout
-      android:layout_width="match_parent"
+  <ImageView
+      android:src="@mipmap/ic_account_circle_black_48dp"
+      android:layout_width="80dp"
+      android:layout_height="80dp"
+      android:id="@+id/imageView"
+      android:adjustViewBounds="false"
+      android:cropToPadding="false"
+      custom:layout_constraintTop_toBottomOf="@+id/toolbar"
+      android:layout_marginStart="16dp"
+      custom:layout_constraintLeft_toLeftOf="parent"
+      android:layout_marginLeft="16dp"
+      android:layout_marginTop="16dp" />
+
+  <TextView
+      style="@style/TextAppearance.AppCompat.Title"
+      android:text="Veronica"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:padding="16dp">
+      android:id="@+id/textView"
+      custom:layout_constraintTop_toTopOf="@+id/imageView"
+      android:layout_marginStart="16dp"
+      custom:layout_constraintLeft_toRightOf="@+id/imageView"
+      android:layout_marginLeft="16dp"
+      android:layout_marginTop="8dp"
+      custom:layout_constraintBottom_toTopOf="@+id/progress_bar"
+      android:layout_marginBottom="8dp" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"/>
+  <com.github.silvestrpredko.dotprogressbar.DotProgressBar
+      android:layout_width="30dp"
+      android:layout_height="11dp"
+      android:id="@+id/progress_bar"
+      custom:amount="3"
+      custom:startColor="@color/md_light_blue_700"
+      custom:endColor="@color/md_light_blue_400"
+      custom:layout_constraintLeft_toLeftOf="@+id/textView"
+      custom:layout_constraintBottom_toBottomOf="@+id/imageView"
+      android:layout_marginBottom="24dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp">
+  <TextView
+      android:text="@string/typing"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/textView2"
+      tools:text="@string/typing"
+      custom:layout_constraintTop_toTopOf="@+id/progress_bar"
+      custom:layout_constraintBottom_toBottomOf="@+id/progress_bar"
+      custom:layout_constraintLeft_toRightOf="@+id/progress_bar"
+      android:layout_marginStart="4dp"
+      android:layout_marginLeft="4dp" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="start|top"
-          android:alpha="0.87"
-          android:padding="5dp"
-          android:text="Veronica"
-          android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
-          android:textColor="@android:color/black"/>
+  <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/btn_direction"
+      android:layout_marginStart="16dp"
+      custom:layout_constraintLeft_toLeftOf="parent"
+      android:layout_marginLeft="16dp"
+      android:layout_marginEnd="16dp"
+      custom:layout_constraintRight_toRightOf="parent"
+      android:layout_marginRight="16dp"
+      custom:layout_constraintHorizontal_bias="0.95"
+      custom:layout_constraintBottom_toBottomOf="parent"
+      android:layout_marginBottom="16dp"
+      style="@style/Widget.AppCompat.Button.Colored"
+      android:text="Change Direction"
+      android:layout_marginTop="8dp"
+      custom:layout_constraintTop_toBottomOf="@+id/container" />
 
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:orientation="horizontal">
+  <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/btn_visibility"
+      android:layout_marginStart="16dp"
+      custom:layout_constraintLeft_toLeftOf="parent"
+      android:layout_marginLeft="16dp"
+      android:layout_marginEnd="16dp"
+      custom:layout_constraintRight_toRightOf="parent"
+      android:layout_marginRight="16dp"
+      custom:layout_constraintHorizontal_bias="0.05"
+      custom:layout_constraintTop_toTopOf="@+id/btn_direction"
+      custom:layout_constraintBottom_toBottomOf="@+id/btn_direction"
+      style="@style/Widget.AppCompat.Button.Colored"
+      android:text="Change Visibility"
+      custom:layout_constraintVertical_bias="1.0" />
 
-        <com.github.silvestrpredko.dotprogressbar.DotProgressBar
-            android:layout_width="50dp"
-            android:layout_height="15dp"
-            android:layout_gravity="center|bottom"
-            custom:amount="3"
-            custom:duration="@android:integer/config_mediumAnimTime"
-            custom:endColor="@color/light_blue_A400"
-            custom:startColor="@color/light_blue_A700"/>
+  <RelativeLayout
+      android:layout_height="wrap_content"
+      custom:layout_constraintLeft_toLeftOf="parent"
+      android:layout_width="0dp"
+      custom:layout_constraintRight_toRightOf="parent"
+      custom:layout_constraintTop_toBottomOf="@+id/imageView"
+      android:layout_marginTop="32dp"
+      android:id="@+id/relativeLayout">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:alpha="0.54"
-            android:text="is typing"
-            android:textColor="@android:color/black"/>
-
-      </LinearLayout>
-    </LinearLayout>
-  </LinearLayout>
-
-  <android.support.v7.widget.LinearLayoutCompat
-      android:id="@+id/progress_bar_container"
-      android:layout_width="match_parent"
-      android:layout_height="100dp"
-      android:orientation="vertical">
 
     <com.github.silvestrpredko.dotprogressbar.DotProgressBar
-        android:id="@+id/dot_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_gravity="center|bottom"
-        android:layout_marginTop="20dp"
         custom:amount="5"
+        custom:startColor="@color/cyan_700"
+        custom:endColor="@color/cyan_400"
         custom:animationDirection="right"
-        custom:duration="@android:integer/config_mediumAnimTime"
-        custom:endColor="@color/light_blue_A400"
-        custom:startColor="@color/light_blue_A700"/>
-  </android.support.v7.widget.LinearLayoutCompat>
+        custom:duration="@android:integer/config_longAnimTime"
+        android:id="@+id/dot_progress_bar" />
 
-  <LinearLayout
-      android:layout_width="match_parent"
+  </RelativeLayout>
+
+  <FrameLayout
       android:layout_height="wrap_content"
-      android:gravity="center"
-      android:orientation="vertical"
-      android:paddingTop="50dp">
+      custom:layout_constraintLeft_toLeftOf="parent"
+      android:layout_marginTop="40dp"
+      custom:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+      android:layout_width="0dp"
+      custom:layout_constraintRight_toRightOf="parent"
+      custom:layout_constraintBottom_toBottomOf="parent"
+      android:layout_marginBottom="16dp"
+      custom:layout_constraintHorizontal_bias="1.0"
+      custom:layout_constraintVertical_bias="0.25"
+      android:id="@+id/container">
 
-    <Button
-        android:id="@+id/btn_change_visibility"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change Visibility"/>
+  </FrameLayout>
 
-    <Button
-        android:id="@+id/btn_change_animation_direction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change Direction"/>
-  </LinearLayout>
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

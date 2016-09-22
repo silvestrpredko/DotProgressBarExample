@@ -4,6 +4,10 @@ android {
   compileSdkVersion 24
   buildToolsVersion "24.0.2"
 
+  lintOptions {
+    abortOnError false
+  }
+
   defaultConfig {
     applicationId "com.silvestr.dotprogressbarexample"
     minSdkVersion 15
@@ -22,5 +26,6 @@ android {
 dependencies {
   compile project(':dot-progress-bar')
   compile 'com.github.bumptech.glide:glide:3.6.1'
-  compile 'com.android.support:support-v4:24.2.0'
+  compile 'com.android.support:support-v4:24.2.1'
+  compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
 }

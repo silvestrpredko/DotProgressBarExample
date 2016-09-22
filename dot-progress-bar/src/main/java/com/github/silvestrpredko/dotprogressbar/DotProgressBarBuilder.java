@@ -42,6 +42,7 @@ public class DotProgressBarBuilder {
     }
 
     public DotProgressBar build() {
+        dotProgressBar.reinitialize();
         return dotProgressBar;
     }
 }
