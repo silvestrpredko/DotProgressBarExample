@@ -26,7 +26,8 @@
       custom:amount="5"
       custom:duration="@android:integer/config_mediumAnimTime"
       custom:endColor="@color/light_blue_A400"
-      custom:startColor="@color/light_blue_A700"/>
+      custom:startColor="@color/light_blue_A700"
+      custom:animationDirection="left"/>
 ```
 ####**Code**
 ```java
@@ -34,6 +35,14 @@ dotProgressBar.setStartColor(startColor);
 dotProgressBar.setEndColor(endColor);
 dotProgressBar.setDotAmount(amount);
 dotProgressBar.setAnimationTime(time);
+
+// or you can use builder
+
+new DotProgressBarBuilder(this)
+                .setDotAmount(5)
+                .setStartColor(Color.BLACK)
+                .setAnimationDirection(DotProgressBar.LEFT_DIRECTION)
+                .build();
 ```
 
 ### License
