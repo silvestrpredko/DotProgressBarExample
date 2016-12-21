@@ -124,7 +124,7 @@
   </RelativeLayout>
 
   <FrameLayout
-      android:layout_height="wrap_content"
+      android:layout_height="48dp"
       custom:layout_constraintLeft_toLeftOf="parent"
       android:layout_marginTop="40dp"
       custom:layout_constraintTop_toBottomOf="@+id/relativeLayout"
@@ -137,5 +137,16 @@
       android:id="@+id/container">
 
   </FrameLayout>
+
+  <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/btnGoToNextActivity"
+      style="@style/Widget.AppCompat.Button.Colored"
+      custom:layout_constraintBottom_toBottomOf="parent"
+      custom:layout_constraintRight_toRightOf="parent"
+      android:layout_marginBottom="16dp"
+      android:text="Go to next activity"
+      custom:layout_constraintLeft_toLeftOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

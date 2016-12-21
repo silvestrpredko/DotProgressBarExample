@@ -1,6 +1,7 @@
 package com.silvestr.dotprogressbarexample;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView profileImageView = (ImageView) findViewById(R.id.imageView);
     final Button btnChangeVisibility = (Button) findViewById(R.id.btn_visibility);
     final Button btnChangeAnimationDirection = (Button) findViewById(R.id.btn_direction);
+    final Button btnGoToNextActivity = (Button) findViewById(R.id.btnGoToNextActivity);
     dotProgressBar = (DotProgressBar) findViewById(R.id.dot_progress_bar);
 
     btnChangeVisibility.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +68,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
           dotProgressBar.changeAnimationDirection(DotProgressBar.LEFT_DIRECTION);
         }
+      }
+    });
+
+    btnGoToNextActivity.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        startActivity(new Intent(MainActivity.this, SecondActivity.class));
       }
     });
 
@@ -129,5 +138,10 @@ public class MainActivity extends AppCompatActivity {
     @Override public String getId() {
       return getClass().getName();
     }
+  }
+
+  @Override
+  public void onAttachedToWindow() {
+    super.onAttachedToWindow();
   }
 }

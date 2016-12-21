@@ -13,7 +13,7 @@ ext {
   siteUrl = 'https://github.com/silvestrpredko/DotProgressBarExample'
   gitUrl = 'https://github.com/silvestrpredko/DotProgressBarExample.git'
 
-  PUBLISH_VERSION = '1.0'
+  PUBLISH_VERSION = '1.1'
 
   developerId = 'silvestr1994'
   developerName = 'Silvestr Predko'
@@ -25,14 +25,14 @@ ext {
 }
 
 android {
-  compileSdkVersion 24
+  compileSdkVersion 25
   buildToolsVersion "24.0.2"
 
   defaultConfig {
     minSdkVersion 14
-    targetSdkVersion 24
-    versionCode 3
-    versionName "3.0"
+    targetSdkVersion 25
+    versionCode 4
+    versionName "4.0"
   }
 
   buildTypes {
@@ -45,7 +45,7 @@ android {
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
-  compile 'com.android.support:appcompat-v7:24.2.1'
+  compile 'com.android.support:appcompat-v7:25.1.0'
 }
 
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

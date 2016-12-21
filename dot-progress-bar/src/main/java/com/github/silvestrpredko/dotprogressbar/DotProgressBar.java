@@ -385,8 +385,8 @@ public class DotProgressBar extends View {
   }
 
   @Override
-  protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
-    super.onVisibilityChanged(changedView, visibility);
+  public void setVisibility(int visibility) {
+    super.setVisibility(visibility);
 
     if (visibility == GONE || visibility == INVISIBLE) {
       stopAnimation();
