@@ -26,7 +26,7 @@ ext {
 
 android {
   compileSdkVersion 25
-  buildToolsVersion "24.0.2"
+  buildToolsVersion '25.0.3'
 
   defaultConfig {
     minSdkVersion 14
@@ -45,7 +45,7 @@ android {
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
-  compile 'com.android.support:appcompat-v7:25.1.0'
+  compile 'com.android.support:support-compat:25.3.1'
 }
 
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

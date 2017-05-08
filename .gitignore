@@ -25,7 +25,6 @@ Desktop.ini
 
 ### Java generated files
 *.class
-*.jar
 !*/libs/*.jar
 *.war
 *.ear
@@ -91,10 +90,6 @@ android/libs/armeabi/
 android/libs/armeabi-v7a/
 android/libs/x86/
 android/gen/
-
-gradle/
-gradlew*
-gradle.properties
 
 # Ignore Gradle GUI config
 gradle-app.setting
