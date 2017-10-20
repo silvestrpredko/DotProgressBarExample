@@ -1,7 +1,7 @@
 **DotProgressBar**
 ===================
 
-###It`s a simple progress bar.
+### It`s a simple progress bar.
 
 ## **Example** ##
 
@@ -11,25 +11,25 @@
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-DotProgressBar-green.svg?style=true)](https://android-arsenal.com/details/1/3340)
 
-###**Gradle**
+### **Gradle**
 ```groovy
-    compile 'com.github.silvestrpredko:dot-progress-bar:1.1'
+compile 'com.github.silvestrpredko:dot-progress-bar:1.1'
 ```    
 
 ## **Usage** ##
-####**XML**
+#### **XML**
 ```xml
-    <com.github.silvestrpredko.dotprogressbar.DotProgressBar
-      android:id="@+id/dot_progress_bar"
-      android:layout_width="match_parent"
-      android:layout_height="50dp"
-      custom:amount="5"
-      custom:duration="@android:integer/config_mediumAnimTime"
-      custom:endColor="@color/light_blue_A400"
-      custom:startColor="@color/light_blue_A700"
-      custom:animationDirection="left"/>
+<com.github.silvestrpredko.dotprogressbar.DotProgressBar
+  android:id="@+id/dot_progress_bar"
+  android:layout_width="match_parent"
+  android:layout_height="50dp"
+  custom:amount="5"
+  custom:duration="@android:integer/config_mediumAnimTime"
+  custom:endColor="@color/light_blue_A400"
+  custom:startColor="@color/light_blue_A700"
+  custom:animationDirection="left"/>
 ```
-####**Code**
+#### **Code**
 ```java
 dotProgressBar.setStartColor(startColor);
 dotProgressBar.setEndColor(endColor);
@@ -45,5 +45,4 @@ new DotProgressBarBuilder(this)
                 .build();
 ```
 
-### License
-[link](./LICENSE.md)
+### [License](./LICENSE.md)
